@@ -35,7 +35,7 @@ namespace Conference_Track_Management
             int durationIndex = proposal.IndexOf("min") - durationDigitCount;
             const int durationPhraseWithSpace = 6;             //xxmins
             string topic = proposal.Substring(0, proposal.Length - durationPhraseWithSpace);
-            string durationString = proposal.Substring(durationIndex, 2);
+            string durationString = proposal.Substring(durationIndex, durationDigitCount);
             int duration = int.Parse(durationString);
             var parsedProposal = Tuple.Create(topic, duration);
             return parsedProposal;
