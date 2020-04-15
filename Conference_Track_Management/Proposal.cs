@@ -4,15 +4,18 @@ namespace Conference_Track_Management
 {
     public class Proposal
     {
-        public Proposal(Tuple<string, int> parsedProposal)
+        public Proposal(string topic, int duration)
         {
-            Topic = parsedProposal.Item1;
-            Duration = parsedProposal.Item2;
+            Topic = topic;
+            Duration = duration;
         }
 
-        public string Topic;
-        public int Duration;
-        
-        
+        public string Topic { get; }
+        public int Duration { get; }
+        public DateTime StartTime;
+        public DateTime EndTime; 
+
+
+
     }
 }

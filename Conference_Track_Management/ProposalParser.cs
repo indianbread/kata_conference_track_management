@@ -29,7 +29,7 @@ namespace Conference_Track_Management
             
         }
 
-        private static Tuple<string, int> GetRegularTalkDetails(string proposal)
+        private static Proposal GetRegularTalkDetails(string proposal)
         {
             const int durationDigitCount = 2;
             int durationIndex = proposal.IndexOf("min") - durationDigitCount;
@@ -37,7 +37,7 @@ namespace Conference_Track_Management
             string topic = proposal.Substring(0, proposal.Length - durationPhraseWithSpace);
             string durationString = proposal.Substring(durationIndex, durationDigitCount);
             int duration = int.Parse(durationString);
-            var parsedProposal = Tuple.Create(topic, duration);
+            var parsedProposal = new Proposal();
             return parsedProposal;
         }
     }
