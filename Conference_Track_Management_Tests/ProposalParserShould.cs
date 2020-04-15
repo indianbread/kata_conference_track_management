@@ -11,10 +11,11 @@ namespace Conference_Track_Management_Tests
         [InlineData("Rails for Python Developers lightning", "Rails for Python Developers", 5)]
         public void SplitStringIntoTopicAndDuration(string proposal, string topic, int duration)
         {
-            var expected = new Tuple<string, int>(topic, duration);
-            var actual = ProposalParser.SplitTopicFromDuration(proposal);
+            var expected = new Proposal(topic, duration);
+            var actual = ProposalParser.GenerateProposal(proposal);
             
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected.Topic, actual.Topic);
+            Assert.Equal(expected.Duration, actual.Duration);
 
         }
         

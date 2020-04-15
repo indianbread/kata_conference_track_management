@@ -12,10 +12,6 @@ namespace Conference_Track_Management
 
         public string Topic { get; }
         public int Duration { get; }
-        public DateTime StartTime;
-        public DateTime EndTime; 
-
-
 
     }
 }

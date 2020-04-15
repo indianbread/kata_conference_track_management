@@ -4,9 +4,9 @@ namespace Conference_Track_Management
 {
     public static class ProposalParser
     {
-        public static Tuple<string, int> SplitTopicFromDuration(string proposal)
+        public static Proposal GenerateProposal(string proposal)
         {
-            Tuple<string, int> proposalDetails = null;
+            Proposal proposalDetails = null;
 
             if (proposal.Contains("lightning"))
             {
@@ -21,11 +21,11 @@ namespace Conference_Track_Management
             return proposalDetails;
         }
 
-        private static Tuple<string, int> GetLightningTalkDetails(string proposal)
+        private static Proposal GetLightningTalkDetails(string proposal)
         {
             string lightningString = " lightning";
             string topic = proposal.Substring(0, proposal.Length - lightningString.Length);
-            return Tuple.Create<string, int>(topic, 5);
+            return new Proposal(topic, LightningTalkDuration);
             
         }
 
@@ -37,8 +37,10 @@ namespace Conference_Track_Management
             string topic = proposal.Substring(0, proposal.Length - durationPhraseWithSpace);
             string durationString = proposal.Substring(durationIndex, durationDigitCount);
             int duration = int.Parse(durationString);
-            var parsedProposal = new Proposal();
+            var parsedProposal = new Proposal(topic, duration);
             return parsedProposal;
         }
+
+        private const int LightningTalkDuration = 5;
     }
 }
