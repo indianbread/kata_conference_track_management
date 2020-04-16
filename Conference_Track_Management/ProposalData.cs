@@ -22,6 +22,9 @@ namespace Conference_Track_Management
                 var proposal = ProposalParser.GenerateProposal(proposalString);
                 proposals.Add(proposal);
             }
+            
+            var lunch = new Proposal("Lunch", 60);
+            proposals.Add(lunch);
 
             return proposals;
         }
