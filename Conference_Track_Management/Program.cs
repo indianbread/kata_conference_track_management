@@ -6,7 +6,12 @@ namespace Conference_Track_Management
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var proposalsListString = ProposalData.GetAllProposals();
+
+            foreach (var proposal in proposalsListString)
+            {
+                Console.WriteLine(proposal);
+            }
         }
     }
 }

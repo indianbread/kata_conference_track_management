@@ -32,7 +32,7 @@ namespace Conference_Track_Management
         private static Proposal GetRegularTalkDetails(string proposal)
         {
             const int durationDigitCount = 2;
-            int durationIndex = proposal.IndexOf("min") - durationDigitCount;
+            int durationIndex = proposal.LastIndexOf("min", StringComparison.Ordinal) - durationDigitCount;
             const int durationPhraseWithSpace = 6;             //xxmins
             string topic = proposal.Substring(0, proposal.Length - durationPhraseWithSpace);
             string durationString = proposal.Substring(durationIndex, durationDigitCount);
@@ -43,4 +43,6 @@ namespace Conference_Track_Management
 
         private const int LightningTalkDuration = 5;
     }
+
+  
 }
