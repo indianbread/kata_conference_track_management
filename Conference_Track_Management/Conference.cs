@@ -1,10 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Conference_Track_Management
 {
     public class Conference
     {
+
+        private List<Proposal> _proposals { get; set; }
         public Conference(string name, List<Proposal> proposals)
         {
             Name = name;
@@ -15,8 +19,7 @@ namespace Conference_Track_Management
         public List<Track> Tracks = new List<Track>();
         
         public string Name { get; }
-        private List<Proposal> _proposals { get; set; }
-
+        
         private int CalculateDurationOfAllProposals()
         {
             int totalProposalDuration = 0;
@@ -31,17 +34,59 @@ namespace Conference_Track_Management
         private List<Track> CreateTracksFromProposals()
         {
             int totalProposalDurationMins = CalculateDurationOfAllProposals();
-            int numberofTracksRequired = totalProposalDurationMins / trackMaxDurationMins;
+            int numberofTracksRequired = (int)Math.Ceiling((decimal)totalProposalDurationMins / trackMaxDurationMins);
             for (int i = 1; i <= numberofTracksRequired; i++)
             {
                 Track track = new Track(i);
                 Tracks.Add(track);
             }
-
+            AssignProposalsToTracks();
             return Tracks;
         }
-        
-            
+
+        private void AssignProposalsToTracks()
+        {
+            Random random = new Random();
+            int numOfProposals = _proposals.Count;
+            var availableIndexes = Enumerable.Range(0, numOfProposals).ToList();
+            foreach (var track in Tracks)
+            {
+                AssignProposalsToTrack(random, numOfProposals, availableIndexes, track);
+            }
+
+            if (!availableIndexes.Any()) return;
+            AssignRemainingProposalsToTrack(availableIndexes);
+        }
+
+        private void AssignRemainingProposalsToTrack(List<int> availableIndexes)
+        {
+            foreach (var index in availableIndexes)
+            {
+                var trackWithAvailableSlot = Tracks.Find(trackItem
+                    =>
+                    (trackItem.GetTotalProposalDuration() <=
+                     trackMaxDurationMins));
+                //TODO: if no tracks and leftover proposals
+                if (trackWithAvailableSlot != null) trackWithAvailableSlot.Proposals.Add(_proposals[index]);
+            }
+        }
+
+        private void AssignProposalsToTrack(Random random, int numOfProposals, List<int> availableIndexes, Track track)
+        {
+            do
+            {
+                int randomIndex;
+                do
+                {
+                    randomIndex = random.Next(0, numOfProposals);
+                } while (!availableIndexes.Contains(randomIndex));
+
+                availableIndexes.Remove(randomIndex);
+                track.Proposals.Add(_proposals[randomIndex]);
+            } while (track.Proposals.Sum(proposal => proposal.Duration) < trackMinDurationMins);
+        }
+
+
         private const int trackMinDurationMins = 6 * 60 ;
         private const int trackMaxDurationMins = 7 * 60;
     }

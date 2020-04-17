@@ -10,7 +10,7 @@ namespace Conference_Track_Management
 
             foreach (var proposal in proposalsListString)
             {
-                Console.WriteLine(proposal);
+                Console.WriteLine(proposal.Topic);
             }
         }
     }

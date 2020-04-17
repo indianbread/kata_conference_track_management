@@ -10,9 +10,9 @@ namespace Conference_Track_Management_Tests
         [Fact]
         public void GenerateAListOfProposals()
         {
-            Assert.Equal(20, ProposalData.GetAllProposals().Count);
+            Assert.Equal(19, ProposalData.GetAllProposals().Count);
         }
-        
-        
+
+
     }
 }

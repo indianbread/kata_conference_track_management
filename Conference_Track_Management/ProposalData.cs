@@ -23,9 +23,6 @@ namespace Conference_Track_Management
                 proposals.Add(proposal);
             }
             
-            var lunch = new Proposal("Lunch", 60);
-            proposals.Add(lunch);
-
             return proposals;
         }
     }

@@ -4,7 +4,7 @@ namespace Conference_Track_Management
 {
     public class Proposal
     {
-        public Proposal(string topic, int duration)
+        public Proposal(string topic, int duration = 0)
         {
             Topic = topic;
             Duration = duration;
