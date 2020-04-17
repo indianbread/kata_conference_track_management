@@ -34,8 +34,8 @@ namespace Conference_Track_Management
         private List<Track> CreateTracksFromProposals()
         {
             int totalProposalDurationMins = CalculateDurationOfAllProposals();
-            int numberofTracksRequired = (int)Math.Ceiling((decimal)totalProposalDurationMins / trackMaxDurationMins);
-            for (int i = 1; i <= numberofTracksRequired; i++)
+            int numberOfTracksRequired = (int)Math.Ceiling((decimal)totalProposalDurationMins / trackMaxDurationMins);
+            for (int i = 1; i <= numberOfTracksRequired; i++)
             {
                 Track track = new Track(i);
                 Tracks.Add(track);
@@ -64,10 +64,13 @@ namespace Conference_Track_Management
             {
                 var trackWithAvailableSlot = Tracks.Find(trackItem
                     =>
-                    (trackItem.GetTotalProposalDuration() <=
+                    ((trackItem.GetTotalProposalDuration() + _proposals[index].Duration) <=
                      trackMaxDurationMins));
-                //TODO: if no tracks and leftover proposals
-                if (trackWithAvailableSlot != null) trackWithAvailableSlot.Proposals.Add(_proposals[index]);
+                if (trackWithAvailableSlot == null)
+                {
+                    throw new ArgumentException("Unable to allocate all proposals to tracks");
+                }
+                trackWithAvailableSlot.Proposals.Add(_proposals[index]);
             }
         }
 
