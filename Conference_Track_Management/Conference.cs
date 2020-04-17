@@ -51,7 +51,7 @@ namespace Conference_Track_Management
             var availableIndexes = Enumerable.Range(0, numOfProposals).ToList();
             foreach (var track in Tracks)
             {
-                AssignProposalsToTrack(random, numOfProposals, availableIndexes, track);
+                AssignProposalsToTrackForMinDuration(random, numOfProposals, availableIndexes, track);
             }
 
             if (!availableIndexes.Any()) return;
@@ -74,7 +74,7 @@ namespace Conference_Track_Management
             }
         }
 
-        private void AssignProposalsToTrack(Random random, int numOfProposals, List<int> availableIndexes, Track track)
+        private void AssignProposalsToTrackForMinDuration(Random random, int numOfProposals, List<int> availableIndexes, Track track)
         {
             do
             {
