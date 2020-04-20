@@ -6,14 +6,16 @@ using Xunit;
 
 namespace Conference_Track_Management_Tests
 {
+    [Collection("ProposalDataCollection")]
     public class ConferenceShould
     {
-        List<Proposal> proposals = ProposalData.GetAllProposals();
-
-        public ConferenceShould()
+        public ProposalDataFixture Fixture;
+        
+        public ConferenceShould(ProposalDataFixture fixture)
         {
-            Sut = new Conference("Test Conference", proposals);
-            
+            Fixture = fixture;
+            Sut = new Conference("Test Conference", Fixture.ProposalList);
+
         }
 
         public Conference Sut;
@@ -41,7 +43,7 @@ namespace Conference_Track_Management_Tests
         [Fact]
         public void AllocateAllProposals()
         {
-            var expectedProposalCount = proposals.Count;
+            var expectedProposalCount = Fixture.ProposalList.Count;
             var actualProposalCount = Sut.Tracks.Select(track => track.Proposals.Count).Sum();
             Assert.Equal(expectedProposalCount, actualProposalCount);
         }

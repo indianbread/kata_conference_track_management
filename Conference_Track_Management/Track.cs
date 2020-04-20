@@ -31,8 +31,4 @@ namespace Conference_Track_Management
         }
     }
 
-    public enum Session
-    {
-        Morning, Afternoon
-    }
 }

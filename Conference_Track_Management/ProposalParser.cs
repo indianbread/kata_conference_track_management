@@ -25,7 +25,7 @@ namespace Conference_Track_Management
         {
             string lightningString = " lightning";
             string topic = proposal.Substring(0, proposal.Length - lightningString.Length);
-            return new Proposal(topic, LightningTalkDuration);
+            return new Proposal(topic, _lightningTalkDuration);
             
         }
 
@@ -41,7 +41,7 @@ namespace Conference_Track_Management
             return parsedProposal;
         }
 
-        private const int LightningTalkDuration = 5;
+        private const int _lightningTalkDuration = 5;
     }
 
   
