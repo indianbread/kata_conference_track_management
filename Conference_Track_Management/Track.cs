@@ -13,7 +13,11 @@ namespace Conference_Track_Management
 
         public int TrackNumber;
         public List<Proposal> Proposals = new List<Proposal>();
-        public SortedDictionary<DateTime, Proposal> Timetable = new SortedDictionary<DateTime, Proposal>() {{DateTime.Parse("12 PM"), new Proposal("Lunch", 60)}};
+        public SortedDictionary<DateTime, Proposal> Timetable = new SortedDictionary<DateTime, Proposal>()
+        {
+            {DateTime.Parse("12 PM"), new Proposal("Lunch", 60)},
+            
+        };
 
         public DateTime GetStartTime()
         {
@@ -22,13 +26,17 @@ namespace Conference_Track_Management
 
         public DateTime GetFinishTime()
         {
-            throw new NotImplementedException();
+            var totalProposalDuration = new TimeSpan(0, GetTotalProposalDuration(), 0);
+            var lunchBreakDuration = new TimeSpan(1,0,0 );
+            var finishTime = GetStartTime() + totalProposalDuration + lunchBreakDuration;
+            return finishTime;
         }
 
         public int GetTotalProposalDuration()
         {
             return Proposals.Sum(proposal => proposal.Duration);
         }
+        
     }
 
 }

@@ -9,27 +9,23 @@ namespace Conference_Track_Management_Tests
     [Collection("ProposalDataCollection")]
     public class ConferenceShould
     {
-        public ProposalDataFixture Fixture;
+        private ProposalDataFixture Fixture;
         
         public ConferenceShould(ProposalDataFixture fixture)
         {
             Fixture = fixture;
-            Sut = new Conference("Test Conference", Fixture.ProposalList);
-
         }
-
-        public Conference Sut;
         
         [Fact]
         public void CreateCorrectNumberOfTracksBasedOnTotalProposalDuration()
         {
-            Assert.Equal(2, Sut.Tracks.Count);
+            Assert.Equal(2, Fixture.Conference.Tracks.Count);
         }
         
         [Fact]
         public void AllocateProposalsToCoverMinTrackDuration()
         {
-            foreach (var track in Sut.Tracks)
+            foreach (var track in Fixture.Conference.Tracks)
             {
                 const int minTrackDuration = 6 * 60;
                 const int maxTrackDuration = 7 * 60;
@@ -44,7 +40,7 @@ namespace Conference_Track_Management_Tests
         public void AllocateAllProposals()
         {
             var expectedProposalCount = Fixture.ProposalList.Count;
-            var actualProposalCount = Sut.Tracks.Select(track => track.Proposals.Count).Sum();
+            var actualProposalCount = Fixture.Conference.Tracks.Select(track => track.Proposals.Count).Sum();
             Assert.Equal(expectedProposalCount, actualProposalCount);
         }
         

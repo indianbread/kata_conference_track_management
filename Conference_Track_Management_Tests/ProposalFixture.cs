@@ -9,10 +9,12 @@ namespace Conference_Track_Management_Tests
         public ProposalDataFixture()
         {
             ProposalList = GetProposalData();
-
+            Conference = new Conference("Test Conference", ProposalList);
+            
         }
 
         public List<Proposal> ProposalList = new List<Proposal>();
+        public Conference Conference;
 
         private List<Proposal> GetProposalData()
         {
