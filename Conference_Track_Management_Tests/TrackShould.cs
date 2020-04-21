@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Xunit;
 
@@ -27,22 +28,24 @@ namespace Conference_Track_Management_Tests
             Assert.True(actualDurationOfSecondTrack >= minTrackDurationMins &&
                         actualDurationOfFirstTrack <= maxTrackDurationMins);
         }
-
+        
         [Fact]
-            public void IncludeAllProposalsInTimetable()
-            {
-                var sut = _fixture.Conference.Tracks[0];
-                var expectedProposalCount = _fixture.Conference.Tracks[0].Proposals.Count;
-                Assert.Equal(expectedProposalCount, sut.Timetable.Count);
+        public void CalculateFinishTimeBasedOnProposalDuration()
+        {
+            var sut = _fixture.Conference.Tracks[0];
+            var expectedFinishTime = DateTime.Parse("5 PM");
+            Assert.Equal(expectedFinishTime, sut.GetFinishTime());
+            
+        }
+        
+        [Fact]
+        public void IncludeAllProposalsInTimetable()
+        {
+            var sut = _fixture.Conference.Tracks[0];
+            var expectedProposalCount = _fixture.Conference.Tracks[0].Proposals.Count;
+            Assert.Equal(expectedProposalCount, sut.Timetable.Count);
 
-            }
-
-            [Fact]
-            public void CalculateFinishTimeBasedOnProposalDuration()
-            {
-
-
-            }
+        }
 
 
 
