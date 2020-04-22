@@ -5,23 +5,25 @@ namespace Conference_Track_Management
 {
     public class ConferenceManager : IConferenceManager
     {
-        public ConferenceManager(ITrackManager trackManager) 
+        public ConferenceManager(ITrackManager trackManager) //use interface so it's easier to test later on - using test doubles
         {
             _trackManager = trackManager;
         }
 
         private ITrackManager _trackManager;
-        public ConferenceTrackResult AllocateAllProposalsToConference(List<Proposal> proposals)
+        public ConferenceTrackResult CreateSchedule(List<Proposal> proposals)
         {
-            //validate if proposal list is null
             if (proposals is null || proposals.Count == 0) return ConferenceTrackResult.CreateError("No proposals to allocate");
-            List<Track> tracks = _trackManager.CreateTracksForGivenProposals(proposals);
-
-            //create a private method that returns an int which returns the amount of tracks required
-            //pass the list of proposals to track manager to allocate, then return the list of unallocated proposals
-
+            List<Track> tracks = _trackManager.GenerateTracksFromProposals(proposals);
+            
             return ConferenceTrackResult.CreateSuccess(tracks);
 
+        }
+
+
+        public ConferenceTrackResult AllocateAllProposalsToConference(List<Proposal> proposals)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

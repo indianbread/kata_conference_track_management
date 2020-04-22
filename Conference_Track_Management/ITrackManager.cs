@@ -4,7 +4,12 @@ namespace Conference_Track_Management
 {
     public interface ITrackManager
     {
+        //put methods here that i want to expose to conference manager
 
-        List<Track> CreateTracksForGivenProposals(List<Proposal> proposals);
+        List<Track> GenerateTracksFromProposals(List<Proposal> proposals);
+
+        // List<Proposal> AllocateProposalsToTrack();
+
+
     }
 }

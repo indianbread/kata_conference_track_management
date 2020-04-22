@@ -37,7 +37,7 @@ namespace Conference_Track_Management
             int numberOfTracksRequired = (int)Math.Ceiling((decimal)totalProposalDurationMins / trackMaxDurationMins);
             for (int i = 1; i <= numberOfTracksRequired; i++)
             {
-                Track track = new Track(i);
+                Track track = new Track();
                 Tracks.Add(track);
             }
             AssignProposalsToTracks();

@@ -6,30 +6,47 @@ namespace Conference_Track_Management
 {
     public class TrackManager : ITrackManager //what is the purpose of the interface?
     {
-        public TrackManager()
+        public TrackManager(List<Proposal> proposals)
         {
             _trackMaxDuration = 7 * 60;
             _trackMinDuration = 6 * 60;
             _lunchBreak = new Proposal("Lunch", 60);
+            _proposals = proposals;
         }
-        
+
         private readonly int _trackMinDuration;
         private readonly int _trackMaxDuration;
         private readonly Proposal _lunchBreak;
+        private List<Proposal> _proposals;
 
-        public List<Track> CreateTracksForGivenProposals(List<Proposal> proposals)
+        
+        public List<Track> GenerateTracksFromProposals(List<Proposal> proposals)
         {
-            var proposalDuration = proposals.Sum(proposal => proposal.Duration);
-            var numberOfTracksRequired = (int)Math.Ceiling((decimal)proposalDuration / _trackMaxDuration);
+            var unallocatedProposals = proposals; 
             var tracks = new List<Track>();
-            for (var i = 1; i <= numberOfTracksRequired; i++)
+            while (unallocatedProposals != null && unallocatedProposals.Count > 0)
             {
-                Track track = new Track(i);
+                var track = AllocateProposalsToTrack(proposals);
                 tracks.Add(track);
             }
 
             return tracks;
-
         }
+
+        private Track AllocateProposalsToTrack(List<Proposal> proposals)
+        {
+            var unAllocatedProposals = proposals;
+            var allocatedProposals = new List<Proposal>();
+            var allocatedProposalDuration = allocatedProposals.Sum(p => p.Duration);
+            foreach (var proposal in unAllocatedProposals)
+            {
+                if (allocatedProposalDuration + proposal.Duration > _trackMaxDuration) continue;
+                allocatedProposals.Add(proposal);
+                unAllocatedProposals.Remove(proposal);
+            }
+
+            return new Track() {Proposals = allocatedProposals};
+        }
+
     }
 }

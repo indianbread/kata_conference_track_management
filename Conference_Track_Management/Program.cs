@@ -10,7 +10,9 @@ namespace Conference_Track_Management
 
             var proposalsListString = ProposalData.GetProposalDataFromFile(filePath);
 
-            var proposalList = ProposalData.GetAllProposals(proposalsListString);
+            var proposalsToAllocate = ProposalData.GetAllProposals(proposalsListString);
+            
+            
         }
     }
 }
