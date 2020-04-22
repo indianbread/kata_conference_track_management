@@ -37,11 +37,12 @@ namespace Conference_Track_Management
         {
             var unAllocatedProposals = proposals;
             var allocatedProposals = new List<Proposal>();
-            var allocatedProposalDuration = allocatedProposals.Sum(p => p.Duration);
+            var allocatedProposalDuration = 0;
             foreach (var proposal in unAllocatedProposals)
             {
                 if (allocatedProposalDuration + proposal.Duration > _trackMaxDuration) continue;
                 allocatedProposals.Add(proposal);
+                allocatedProposalDuration += proposal.Duration;
                 unAllocatedProposals.Remove(proposal);
             }
 
