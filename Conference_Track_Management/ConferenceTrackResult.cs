@@ -8,7 +8,7 @@ namespace Conference_Track_Management
         public List<Track> Tracks { get; set; }
         public string ErrorMessage { get; set; }
 
-        internal static ConferenceTrackResult CreateError(string errorMessage) 
+        internal static ConferenceTrackResult CreateError(string errorMessage) //this method ensures errors are logged & returned in a consistent manner
             //internal only allows the method to be accessed from within the project
         {
             return new ConferenceTrackResult()

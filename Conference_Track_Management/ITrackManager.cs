@@ -7,8 +7,7 @@ namespace Conference_Track_Management
         //put methods here that i want to expose to conference manager
 
         List<Track> GenerateTracksFromProposals(List<Proposal> proposals);
-
-        // List<Proposal> AllocateProposalsToTrack();
+        
 
 
     }

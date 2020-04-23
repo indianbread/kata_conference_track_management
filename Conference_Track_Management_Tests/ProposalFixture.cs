@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Conference_Track_Management;
 using Xunit;
+using System.IO;
 
 namespace Conference_Track_Management_Tests
 {
@@ -9,17 +12,18 @@ namespace Conference_Track_Management_Tests
         public ProposalDataFixture()
         {
             ProposalList = GetProposalData();
-            Conference = new Conference("Test Conference", ProposalList);
+            TrackManager = new TrackManager(ProposalList);
+            Conference = new ConferenceManager(TrackManager);
             
         }
 
         public List<Proposal> ProposalList = new List<Proposal>();
-        public Conference Conference;
+        public IConferenceManager Conference;
+        public ITrackManager TrackManager;
 
         private List<Proposal> GetProposalData()
         {
-            const string filePath = "/Users/nhan.dang/OneDrive - MYOB/Future-Makers-Academy/General_Developer/katas/kata-conference-track-management/kata_conference_track_management/Conference_Track_Management/Conference_Track_Management/Proposals.csv";
-
+            string filePath = @$"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}/App_Data/Proposals.csv";
             var proposalsListString = ProposalData.GetProposalDataFromFile(filePath);
 
             return ProposalData.GetAllProposals(proposalsListString);
