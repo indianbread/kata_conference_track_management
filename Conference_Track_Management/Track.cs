@@ -32,7 +32,11 @@ namespace Conference_Track_Management
         {
             return Proposals.Sum(proposal => proposal.Duration);
         }
-        
+
+        public bool IsSessionAvailable(DateTime dateTime)
+        {
+            return !Schedule.ContainsKey(dateTime);
+        }
     }
 
 }

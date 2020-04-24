@@ -69,14 +69,13 @@ namespace Conference_Track_Management_Tests
             Assert.Equal(19, actualProposalCount);
         }
 
-        [Fact]
+        [Fact(Skip = "incomplete test")]
         public void AllocateAProposalToAnEmptyScheduleSlot()
         {
             var tracks = _sut.GenerateTracksFromProposals();
             var track1 = tracks[0];
             var track2 = tracks[1];
 
-//TODO: Assertion
         }
 
         [Fact(Skip = "Doesn't work at the moment")]

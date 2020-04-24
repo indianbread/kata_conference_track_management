@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Xunit;
 using Conference_Track_Management;
@@ -5,19 +6,32 @@ using Conference_Track_Management;
 
 namespace Conference_Track_Management_Tests.App_Data
 {
-    [Collection("ProposalDataCollection")]
     public class TrackShould
     {
-        private ProposalDataFixture _fixture;
-        private List<Track> _sut = new List<Track>();
 
-        public TrackShould(ProposalDataFixture fixture)
+        private Track _sut;
+
+        public TrackShould()
         {
-            _fixture = fixture;
-            _sut = new TrackManager(_fixture.ProposalList).GenerateTracksFromProposals();
-
+            _sut = new Track();
 
         }
+
+        [Fact]
+        public void DetermineIfScheduleSlotIsNotAvailable()
+        {
+            var lunchTime = DateTime.Parse("12 PM");
+            
+            Assert.False(_sut.IsSessionAvailable(lunchTime));
+        }
+
+        [Fact]
+        public void DetermineIfScheduleSlotIsAvailable()
+        {
+            Assert.True(_sut.IsSessionAvailable(DateTime.Parse("9 AM")));
+        }
+
+        
         
         
     }
