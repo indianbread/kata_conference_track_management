@@ -20,13 +20,13 @@ namespace Conference_Track_Management
         private List<Proposal> _proposals;
 
         
-        public List<Track> GenerateTracksFromProposals(List<Proposal> proposals)
+        public List<Track> GenerateTracksFromProposals()
         {
-            var unallocatedProposals = proposals; 
+            var unallocatedProposals = _proposals.ToList(); 
             var tracks = new List<Track>();
             while (unallocatedProposals != null && unallocatedProposals.Count > 0)
             {
-                var track = AllocateProposalsToTrack(proposals);
+                var track = AllocateProposalsToTrack(unallocatedProposals);
                 tracks.Add(track);
             }
 
@@ -49,6 +49,6 @@ namespace Conference_Track_Management
 
             return new Track() {Proposals = allocatedProposals};
         }
-
+        
     }
 }
