@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Conference_Track_Management
@@ -8,8 +9,5 @@ namespace Conference_Track_Management
 
         List<Track> GenerateTracksFromProposals();
         
-        
-
-
     }
 }
