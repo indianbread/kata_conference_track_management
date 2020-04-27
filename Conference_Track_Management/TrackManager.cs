@@ -102,14 +102,18 @@ namespace Conference_Track_Management
                 if ((allocatedProposalDuration += proposal.Duration) > durationToAllocate) continue;
                 allocatedProposalDuration = AddProposalToSchedule(unallocatedProposals, startTime, track, proposal, ref allocatedProposalDuration);
                 startTime = GetNextStartTime(startTime, proposal);
+                
             }
         }
 
         private int GetNextStartTime(int currentStartTime, Proposal proposal)
         {
-            var newStartTime = Track.FormatIntegerTime(currentStartTime + proposal.Duration);
+            var proposalDuration = proposal.Duration < 60
+                ? proposal.Duration
+                : Track.ConvertToHoursAndMins(proposal.Duration);  
+            var newStartTime = currentStartTime + proposalDuration;
 
-            return newStartTime;
+            return Track.FormatIntegerTime(newStartTime);
         }
 
         private int AddProposalToSchedule(List<Proposal> unallocatedProposals, int startTime, Track track, Proposal proposal, ref int allocatedProposalDuration)
@@ -118,16 +122,7 @@ namespace Conference_Track_Management
             unallocatedProposals.Remove(proposal);
             return allocatedProposalDuration += proposal.Duration;
         }
-
-        // private TimeSpan ParseDurationToTimeSpan(int sessionDuration)
-        // {
-        //     var durationTimeSpan = sessionDuration == 60
-        //         ? TimeSpan.Parse("1:00:00")
-        //         : TimeSpan.Parse($"0:{sessionDuration.ToString()}:00");
-        //     return durationTimeSpan;
-        // }
-
-
+        
         private Track AllocateProposalsToTrack(List<Proposal> proposals)
         {
             var unAllocatedProposals = proposals;

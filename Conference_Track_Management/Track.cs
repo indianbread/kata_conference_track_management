@@ -24,8 +24,8 @@ namespace Conference_Track_Management
         {
             var totalProposalDuration = GetTotalProposalDuration();
             var lunchBreakDuration = 60;
-            var finishTime = GetStartTime() + totalProposalDuration + lunchBreakDuration;
-            return finishTime;
+            var finishTime = GetStartTime() + ConvertToHoursAndMins(totalProposalDuration) + ConvertToHoursAndMins(lunchBreakDuration);
+            return FormatIntegerTime(finishTime);
         }
 
         public int GetTotalProposalDuration()
@@ -41,11 +41,11 @@ namespace Conference_Track_Management
         public static int ConvertToHoursAndMins(int mins)
         {
             var numOfHours = mins / 60;
-            var numOfHoursString = numOfHours.ToString().Length == 2 ? $"{numOfHours}" : $"0{numOfHours}";
+            // var numOfHoursString = numOfHours.ToString().Length == 2 ? $"{numOfHours}" : $"0{numOfHours}";
             var numOfMins = mins - (numOfHours * 60);
             var numOfMinsString = numOfMins.ToString().Length == 2
                 ? $"{numOfMins}" : $"0{numOfMins}";
-            var parsedTime = int.Parse(numOfHoursString +numOfMinsString);
+            var parsedTime = int.Parse($"{numOfHours}{numOfMinsString}");
             return parsedTime;
         }
 
@@ -55,7 +55,7 @@ namespace Conference_Track_Management
             if (mins >= 60)
             {
                 var parsedMin = ConvertToHoursAndMins(mins);
-                time += parsedMin;
+                time = (time - mins) + parsedMin;
             }
 
             return time;
