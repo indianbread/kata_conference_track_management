@@ -76,12 +76,7 @@ namespace Conference_Track_Management_Tests
             Assert.Equal(180, actualtrack2duration);
             
         }
-
-        [Fact(Skip = "incomplete test")]
-        public void AllocateAProposalToAnEmptyScheduleSlot()
-        {
-        }
-
+        
         [Fact]
         public void AllocateProposalsToTrackSchedule()
         {

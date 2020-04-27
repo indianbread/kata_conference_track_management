@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace Conference_Track_Management
 {
@@ -40,33 +41,90 @@ namespace Conference_Track_Management
             var unallocatedProposals = track.Proposals.ToList();
             const int morningSessionDuration = 3 * 60;
             var proposalsNotAllocatedToMorningSchedule =
-                CreateSessionSchedule(track.GetStartTime(), morningSessionDuration, unallocatedProposals, track);
-            var afternoonSessionDuration = proposalsNotAllocatedToMorningSchedule.Sum(proposal => proposal.Duration);
-            var afternoonSchedule = CreateSessionSchedule(DateTime.Parse("1 PM"), afternoonSessionDuration,
-                proposalsNotAllocatedToMorningSchedule, track);
+                CreateMorningSession(track.GetStartTime(), morningSessionDuration, unallocatedProposals, track);
+            var afternoonSessionStartTime = DateTime.Parse("1 PM");
+            var startTime = afternoonSessionStartTime;
+            foreach (var proposal in proposalsNotAllocatedToMorningSchedule)
+            {
+                track.Schedule.Add(startTime, proposal );
+                startTime += ParseDurationToTimeSpan(proposal.Duration);
+            }
+
             var networkingEvent = new Proposal("Networking Event");
             track.Schedule.Add(track.GetFinishTime(), networkingEvent);
         }
 
-        private List<Proposal> CreateSessionSchedule(DateTime sessionStartTime, int sessionDuration, List<Proposal> proposals, Track track)
+        private List<Proposal> CreateMorningSession(DateTime sessionStartTime, int sessionDuration, List<Proposal> proposals, Track track)
         {
-            //TODO: fix the scheduling - there is a gap between last morning session & lunch time
             var unAllocatedProposals = proposals.ToList();
             var allocatedProposalDuration = 0;
             var startTime = sessionStartTime;
+            if (unAllocatedProposals.Count(proposal => proposal.Duration == 45) < 2)
+            {
+                Allocate30Or60MinProposals(unAllocatedProposals, startTime, track.GetTotalProposalDuration(), track);
+
+                return unAllocatedProposals;
+            }
             foreach (var proposal in unAllocatedProposals.ToList())
             {
                 if (allocatedProposalDuration == sessionDuration) break;
-                if (allocatedProposalDuration + proposal.Duration > sessionDuration) continue;
-                track.Schedule.Add(startTime, proposal);
+                if (proposal.Duration == 45 && allocatedProposalDuration < 90)
+                {
+                    track.Schedule.Add(startTime, proposal );
+                    startTime += ParseDurationToTimeSpan(proposal.Duration);
+                    unAllocatedProposals.Remove(proposal);
+                    allocatedProposalDuration += proposal.Duration;
+                    var nextTargetProposal = unAllocatedProposals.First(p => p.Duration == 45);
+                    track.Schedule.Add(startTime, nextTargetProposal);
+                    startTime += ParseDurationToTimeSpan(nextTargetProposal.Duration);
+                    allocatedProposalDuration += nextTargetProposal.Duration;
+                    unAllocatedProposals.Remove(nextTargetProposal);
+                }
+                if (proposal.Duration == 45 || proposal.Duration == 5) continue;
+                if (proposal.Duration == 60 && allocatedProposalDuration > 120) continue;
+                track.Schedule.Add(startTime, proposal );
+                startTime += ParseDurationToTimeSpan(proposal.Duration);
                 allocatedProposalDuration += proposal.Duration;
-                var timeSpanDuration = proposal.Duration == 60
-                    ? TimeSpan.Parse($"1:00:00")
-                    : TimeSpan.Parse($"0:{proposal.Duration.ToString()}:00");
-                startTime += timeSpanDuration;
                 unAllocatedProposals.Remove(proposal);
             }
             return unAllocatedProposals;
+        }
+
+        private void Allocate30Or60MinProposals(List<Proposal> unallocatedProposals, DateTime startTime,
+            int durationToAllocate,
+            Track track)
+        {
+            var allocatedProposalDuration = 0;
+            var targetProposalsToAllocate = unallocatedProposals.Where(proposal => proposal.Duration % 30 == 0);
+            foreach (var proposal in targetProposalsToAllocate.ToList())
+            {
+                if (allocatedProposalDuration == durationToAllocate) break;
+                if ((allocatedProposalDuration += proposal.Duration) > durationToAllocate) continue;
+                AddProposalToSchedule(unallocatedProposals, startTime, track, proposal);
+                startTime = GetNextStartTime(startTime, proposal);
+            }
+        }
+
+        private DateTime GetNextStartTime(DateTime currentStartTime, Proposal proposal)
+        {
+            var durationTimeSpan = ParseDurationToTimeSpan(proposal.Duration);
+            var newStartTime = currentStartTime + durationTimeSpan;
+            return newStartTime;
+
+        }
+
+        private void AddProposalToSchedule(List<Proposal> unallocatedProposals, DateTime startTime, Track track, Proposal proposal)
+        {
+            track.Schedule.Add(startTime, proposal);
+            unallocatedProposals.Remove(proposal);
+        }
+
+        private TimeSpan ParseDurationToTimeSpan(int sessionDuration)
+        {
+            var durationTimeSpan = sessionDuration == 60
+                ? TimeSpan.Parse("1:00:00")
+                : TimeSpan.Parse($"0:{sessionDuration.ToString()}:00");
+            return durationTimeSpan;
         }
 
 
