@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Conference_Track_Management
 {
-    public class TrackManager : ITrackManager //what is the purpose of the interface?
+    public class TrackManager : ITrackManager
     {
         public TrackManager(List<Proposal> proposals)
         {
@@ -38,8 +38,9 @@ namespace Conference_Track_Management
             var unAllocatedProposals = proposals;
             var allocatedProposals = new List<Proposal>();
             var allocatedProposalDuration = 0;
-            foreach (var proposal in unAllocatedProposals)
+            foreach (var proposal in unAllocatedProposals.ToList())
             {
+                if (allocatedProposalDuration == _trackMaxDuration) break;
                 if (allocatedProposalDuration + proposal.Duration > _trackMaxDuration) continue;
                 allocatedProposals.Add(proposal);
                 allocatedProposalDuration += proposal.Duration;
