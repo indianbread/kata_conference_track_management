@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Conference_Track_Management
@@ -6,9 +7,7 @@ namespace Conference_Track_Management
     {
         //put methods here that i want to expose to conference manager
 
-        List<Track> GenerateTracksFromProposals(List<Proposal> proposals);
+        List<Track> GenerateTracksFromProposals();
         
-
-
     }
 }

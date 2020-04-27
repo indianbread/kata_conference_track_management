@@ -14,7 +14,7 @@ namespace Conference_Track_Management
         public ConferenceTrackResult CreateSchedule(List<Proposal> proposals)
         {
             if (proposals is null || proposals.Count == 0) return ConferenceTrackResult.CreateError("No proposals to allocate");
-            List<Track> tracks = _trackManager.GenerateTracksFromProposals(proposals);
+            List<Track> tracks = _trackManager.GenerateTracksFromProposals();
             
             return ConferenceTrackResult.CreateSuccess(tracks);
 
