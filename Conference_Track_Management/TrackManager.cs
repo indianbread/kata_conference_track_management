@@ -11,13 +11,11 @@ namespace Conference_Track_Management
         {
             _trackMaxDuration = 7 * 60;
             _trackMinDuration = 6 * 60;
-            _lunchBreak = new Proposal("Lunch", 60);
             _proposals = proposals;
         }
 
         private readonly int _trackMinDuration;
         private readonly int _trackMaxDuration;
-        private readonly Proposal _lunchBreak;
         private List<Proposal> _proposals;
 
         
@@ -34,7 +32,6 @@ namespace Conference_Track_Management
 
             return tracks;
         }
-        
 
         private void CreateTrackSchedule(Track track)
         {
@@ -70,24 +67,27 @@ namespace Conference_Track_Management
                 if (allocatedProposalDuration == sessionDuration) break;
                 if (proposal.Duration == 45 && allocatedProposalDuration < 90)
                 {
-                    track.Schedule.Add(startTime, proposal );
-                    startTime += ParseDurationToTimeSpan(proposal.Duration);
-                    unAllocatedProposals.Remove(proposal);
-                    allocatedProposalDuration += proposal.Duration;
-                    var nextTargetProposal = unAllocatedProposals.First(p => p.Duration == 45);
-                    track.Schedule.Add(startTime, nextTargetProposal);
-                    startTime += ParseDurationToTimeSpan(nextTargetProposal.Duration);
-                    allocatedProposalDuration += nextTargetProposal.Duration;
-                    unAllocatedProposals.Remove(nextTargetProposal);
-                }
+                    startTime = Allocate45MinProposals(track, ref allocatedProposalDuration, unAllocatedProposals, proposal, startTime);
+                }  
                 if (proposal.Duration == 45 || proposal.Duration == 5) continue;
                 if (proposal.Duration == 60 && allocatedProposalDuration > 120) continue;
-                track.Schedule.Add(startTime, proposal );
-                startTime += ParseDurationToTimeSpan(proposal.Duration);
-                allocatedProposalDuration += proposal.Duration;
-                unAllocatedProposals.Remove(proposal);
+                AddProposalToSchedule(unAllocatedProposals, startTime, track, proposal, ref allocatedProposalDuration);
+                startTime = GetNextStartTime(startTime, proposal);
             }
             return unAllocatedProposals;
+        }
+
+        private DateTime Allocate45MinProposals(Track track, ref int allocatedProposalDuration, List<Proposal> unAllocatedProposals,
+            Proposal proposal, DateTime startTime)
+        {
+            allocatedProposalDuration = AddProposalToSchedule(unAllocatedProposals, startTime, track, proposal,
+                ref allocatedProposalDuration);
+            startTime = GetNextStartTime(startTime, proposal);
+            var nextTargetProposal = unAllocatedProposals.First(p => p.Duration == 45);
+            allocatedProposalDuration = AddProposalToSchedule(unAllocatedProposals, startTime, track, nextTargetProposal,
+                ref allocatedProposalDuration);
+            startTime = GetNextStartTime(startTime, nextTargetProposal);
+            return startTime;
         }
 
         private void Allocate30Or60MinProposals(List<Proposal> unallocatedProposals, DateTime startTime,
@@ -100,7 +100,7 @@ namespace Conference_Track_Management
             {
                 if (allocatedProposalDuration == durationToAllocate) break;
                 if ((allocatedProposalDuration += proposal.Duration) > durationToAllocate) continue;
-                AddProposalToSchedule(unallocatedProposals, startTime, track, proposal);
+                allocatedProposalDuration = AddProposalToSchedule(unallocatedProposals, startTime, track, proposal, ref allocatedProposalDuration);
                 startTime = GetNextStartTime(startTime, proposal);
             }
         }
@@ -113,10 +113,11 @@ namespace Conference_Track_Management
 
         }
 
-        private void AddProposalToSchedule(List<Proposal> unallocatedProposals, DateTime startTime, Track track, Proposal proposal)
+        private int AddProposalToSchedule(List<Proposal> unallocatedProposals, DateTime startTime, Track track, Proposal proposal, ref int allocatedProposalDuration)
         {
             track.Schedule.Add(startTime, proposal);
             unallocatedProposals.Remove(proposal);
+            return allocatedProposalDuration += proposal.Duration;
         }
 
         private TimeSpan ParseDurationToTimeSpan(int sessionDuration)
