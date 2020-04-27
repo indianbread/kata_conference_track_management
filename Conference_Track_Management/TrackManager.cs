@@ -39,19 +39,19 @@ namespace Conference_Track_Management
             const int morningSessionDuration = 3 * 60;
             var proposalsNotAllocatedToMorningSchedule =
                 CreateMorningSession(track.GetStartTime(), morningSessionDuration, unallocatedProposals, track);
-            var afternoonSessionStartTime = DateTime.Parse("1 PM");
+            var afternoonSessionStartTime = 1300;
             var startTime = afternoonSessionStartTime;
-            foreach (var proposal in proposalsNotAllocatedToMorningSchedule)
+            foreach (var proposal in proposalsNotAllocatedToMorningSchedule.ToList())
             {
                 track.Schedule.Add(startTime, proposal );
-                startTime += ParseDurationToTimeSpan(proposal.Duration);
+                startTime += Track.ConvertToHoursAndMins(proposal.Duration);
             }
 
             var networkingEvent = new Proposal("Networking Event");
             track.Schedule.Add(track.GetFinishTime(), networkingEvent);
         }
 
-        private List<Proposal> CreateMorningSession(DateTime sessionStartTime, int sessionDuration, List<Proposal> proposals, Track track)
+        private List<Proposal> CreateMorningSession(int sessionStartTime, int sessionDuration, List<Proposal> proposals, Track track)
         {
             var unAllocatedProposals = proposals.ToList();
             var allocatedProposalDuration = 0;
@@ -77,8 +77,8 @@ namespace Conference_Track_Management
             return unAllocatedProposals;
         }
 
-        private DateTime Allocate45MinProposals(Track track, ref int allocatedProposalDuration, List<Proposal> unAllocatedProposals,
-            Proposal proposal, DateTime startTime)
+        private int Allocate45MinProposals(Track track, ref int allocatedProposalDuration, List<Proposal> unAllocatedProposals,
+            Proposal proposal, int startTime)
         {
             allocatedProposalDuration = AddProposalToSchedule(unAllocatedProposals, startTime, track, proposal,
                 ref allocatedProposalDuration);
@@ -90,7 +90,7 @@ namespace Conference_Track_Management
             return startTime;
         }
 
-        private void Allocate30Or60MinProposals(List<Proposal> unallocatedProposals, DateTime startTime,
+        private void Allocate30Or60MinProposals(List<Proposal> unallocatedProposals, int startTime,
             int durationToAllocate,
             Track track)
         {
@@ -105,28 +105,27 @@ namespace Conference_Track_Management
             }
         }
 
-        private DateTime GetNextStartTime(DateTime currentStartTime, Proposal proposal)
+        private int GetNextStartTime(int currentStartTime, Proposal proposal)
         {
-            var durationTimeSpan = ParseDurationToTimeSpan(proposal.Duration);
-            var newStartTime = currentStartTime + durationTimeSpan;
-            return newStartTime;
+            var newStartTime = Track.FormatIntegerTime(currentStartTime + proposal.Duration);
 
+            return newStartTime;
         }
 
-        private int AddProposalToSchedule(List<Proposal> unallocatedProposals, DateTime startTime, Track track, Proposal proposal, ref int allocatedProposalDuration)
+        private int AddProposalToSchedule(List<Proposal> unallocatedProposals, int startTime, Track track, Proposal proposal, ref int allocatedProposalDuration)
         {
             track.Schedule.Add(startTime, proposal);
             unallocatedProposals.Remove(proposal);
             return allocatedProposalDuration += proposal.Duration;
         }
 
-        private TimeSpan ParseDurationToTimeSpan(int sessionDuration)
-        {
-            var durationTimeSpan = sessionDuration == 60
-                ? TimeSpan.Parse("1:00:00")
-                : TimeSpan.Parse($"0:{sessionDuration.ToString()}:00");
-            return durationTimeSpan;
-        }
+        // private TimeSpan ParseDurationToTimeSpan(int sessionDuration)
+        // {
+        //     var durationTimeSpan = sessionDuration == 60
+        //         ? TimeSpan.Parse("1:00:00")
+        //         : TimeSpan.Parse($"0:{sessionDuration.ToString()}:00");
+        //     return durationTimeSpan;
+        // }
 
 
         private Track AllocateProposalsToTrack(List<Proposal> proposals)

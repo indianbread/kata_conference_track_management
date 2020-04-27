@@ -9,21 +9,21 @@ namespace Conference_Track_Management
         
         public int TrackNumber { get; set; }
         public List<Proposal> Proposals { get; set; }
-        public SortedDictionary<DateTime, Proposal> Schedule = new SortedDictionary<DateTime, Proposal>()
+        public SortedDictionary<int, Proposal> Schedule = new SortedDictionary<int, Proposal>()
         {
-            {DateTime.Parse("12 PM"), new Proposal("Lunch", 60)},
+            {1200, new Proposal("Lunch", 60)},
             
         };
 
-        public DateTime GetStartTime()
+        public int GetStartTime()
         {
-            return DateTime.Parse("9 AM" );
+            return 0900;
         }
 
-        public DateTime GetFinishTime()
+        public int GetFinishTime()
         {
-            var totalProposalDuration = new TimeSpan(0, GetTotalProposalDuration(), 0);
-            var lunchBreakDuration = new TimeSpan(0,60,0 );
+            var totalProposalDuration = GetTotalProposalDuration();
+            var lunchBreakDuration = 60;
             var finishTime = GetStartTime() + totalProposalDuration + lunchBreakDuration;
             return finishTime;
         }
@@ -33,9 +33,33 @@ namespace Conference_Track_Management
             return Proposals.Sum(proposal => proposal.Duration);
         }
 
-        public bool IsSessionAvailable(DateTime dateTime)
+        public bool IsSessionAvailable(int time)
         {
-            return !Schedule.ContainsKey(dateTime);
+            return !Schedule.ContainsKey(time);
+        }
+
+        public static int ConvertToHoursAndMins(int mins)
+        {
+            var numOfHours = mins / 60;
+            var numOfHoursString = numOfHours.ToString().Length == 2 ? $"{numOfHours}" : $"0{numOfHours}";
+            var numOfMins = mins - (numOfHours * 60);
+            var numOfMinsString = numOfMins.ToString().Length == 2
+                ? $"{numOfMins}" : $"0{numOfMins}";
+            var parsedTime = int.Parse(numOfHoursString +numOfMinsString);
+            return parsedTime;
+        }
+
+        public static int FormatIntegerTime(int time)
+        {
+            var mins = time >= 1000 ? time % 100 : time % 10;
+            if (mins >= 60)
+            {
+                var parsedMin = ConvertToHoursAndMins(mins);
+                time += parsedMin;
+            }
+
+            return time;
+
         }
     }
 

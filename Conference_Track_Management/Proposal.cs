@@ -15,12 +15,12 @@ namespace Conference_Track_Management
         public int Duration { get; private set; } //private set - allows methods in this class to be able to change the value
         //if no setter at all then can only set the value from the constructor
 
-        public DateTime GetStartTime()
+        public int GetStartTime()
         {
             throw new NotImplementedException();
         }
 
-        public DateTime GetFinishTime()
+        public int GetFinishTime()
         {
             throw new NotImplementedException();
         }

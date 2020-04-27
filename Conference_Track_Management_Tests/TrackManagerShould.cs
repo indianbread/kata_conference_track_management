@@ -43,8 +43,8 @@ namespace Conference_Track_Management_Tests
         [Fact]
         public void CalculateFinishTimeBasedOnProposalDuration()
         {
-            var expectedMinFinishTime = DateTime.Parse("4 PM");
-            var expectedMaxFinishTime = DateTime.Parse("5 PM");
+            var expectedMinFinishTime = 1600;
+            var expectedMaxFinishTime = 1700;
 
             var track1ActualFinishTime = _track1.GetFinishTime();
             var track2ActualFinishTime = _track2.GetFinishTime();
@@ -66,10 +66,10 @@ namespace Conference_Track_Management_Tests
         [Fact]
         public void Allocate3HoursDurationForMorningSession()
         {
-            var actualtrack1duration = _track1.Schedule.Where(item => item.Key < DateTime.Parse("12 PM"))
+            var actualtrack1duration = _track1.Schedule.Where(item => item.Key < 1200)
                 .Sum(item => item.Value.Duration);
             
-            var actualtrack2duration = _track2.Schedule.Where(item => item.Key < DateTime.Parse("12 PM"))
+            var actualtrack2duration = _track2.Schedule.Where(item => item.Key < 1200)
                 .Sum(item => item.Value.Duration);
             
             Assert.Equal(180, actualtrack1duration);

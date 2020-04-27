@@ -4,8 +4,8 @@ namespace Conference_Track_Management
 {
     public interface ISessionInfo
     {
-        public DateTime GetStartTime();
+        public int GetStartTime();
 
-        public DateTime GetFinishTime();
+        public int GetFinishTime();
     }
 }
