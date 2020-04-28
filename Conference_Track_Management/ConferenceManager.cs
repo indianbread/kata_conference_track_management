@@ -11,7 +11,7 @@ namespace Conference_Track_Management
         }
 
         private ITrackManager _trackManager;
-        public ConferenceTrackResult CreateSchedule(List<Proposal> proposals)
+        public ConferenceTrackResult AllocateAllProposalsToConference(List<Proposal> proposals)
         {
             if (proposals is null || proposals.Count == 0) return ConferenceTrackResult.CreateError("No proposals to allocate");
             List<Track> tracks = _trackManager.GenerateTracksFromProposals();
@@ -19,11 +19,6 @@ namespace Conference_Track_Management
             return ConferenceTrackResult.CreateSuccess(tracks);
 
         }
-
-
-        public ConferenceTrackResult AllocateAllProposalsToConference(List<Proposal> proposals)
-        {
-            throw new System.NotImplementedException();
-        }
+        
     }
 }

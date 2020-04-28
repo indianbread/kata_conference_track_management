@@ -2,7 +2,7 @@ using System;
 
 namespace Conference_Track_Management
 {
-    public class Proposal : ISessionInfo
+    public class Proposal
     {
         public Proposal(string topic, int duration = 0)
         {
@@ -14,15 +14,6 @@ namespace Conference_Track_Management
         //getter here more for memory management to make it a registered property so compiler knows how to deal with this field
         public int Duration { get; private set; } //private set - allows methods in this class to be able to change the value
         //if no setter at all then can only set the value from the constructor
-
-        public DateTime GetStartTime()
-        {
-            throw new NotImplementedException();
-        }
-
-        public DateTime GetFinishTime()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using Conference_Track_Management;
 using Xunit;
 
@@ -41,7 +40,7 @@ namespace Conference_Track_Management_Tests
         }
         
         [Fact]
-        public void CalculateFinishTimeBasedOnProposalDuration()
+        public void AllocateProposalsToMeetFinishTimeRequirements()
         {
             var expectedMinFinishTime = DateTime.Parse("4 PM");
             var expectedMaxFinishTime = DateTime.Parse("5 PM");
@@ -80,10 +79,7 @@ namespace Conference_Track_Management_Tests
         [Fact]
         public void AllocateProposalsToTrackSchedule()
         {
-
-            var track1Schedule = _track1.Schedule;
-            var track2Schedule = _track2.Schedule;
-
+            
             var lunchBreakNetworkingEventCount = 2;
 
             var track1ExpectedScheduleCount = _track1.Proposals.Count + lunchBreakNetworkingEventCount;
@@ -93,9 +89,6 @@ namespace Conference_Track_Management_Tests
             Assert.Equal(track2ExpectedScheduleCount, _track2.Schedule.Count);
             
         }
-
-
-
 
     }
 }

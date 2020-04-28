@@ -6,33 +6,58 @@ using Conference_Track_Management;
 
 namespace Conference_Track_Management_Tests.App_Data
 {
+    [Collection("ProposalDataCollection")]
     public class TrackShould
     {
-
-        private Track _sut;
-
-        public TrackShould()
+        public TrackShould(ProposalDataFixture fixture)
         {
-            _sut = new Track();
+            _fixture = fixture;
+            sut = new Track();
+        }
 
+        public Track sut;
+        private ProposalDataFixture _fixture;
+
+        [Fact]
+        public void StartAt9AM()
+        {
+            var expectedStartTime = DateTime.Parse("9 AM");
+            Assert.Equal(expectedStartTime, sut.GetStartTime());
         }
 
         [Fact]
-        public void DetermineIfScheduleSlotIsNotAvailable()
+        public void CalculateFinishTimeBasedOnProposalDuration()
         {
-            var lunchTime = DateTime.Parse("12 PM");
+            var proposal1 = _fixture.ProposalList[0]; //60 min
+            var proposal2 = _fixture.ProposalList[1]; // 45 min
             
-            Assert.False(_sut.IsSessionAvailable(lunchTime));
-        }
+            sut.Proposals = new List<Proposal>();
+            
+            sut.Proposals.Add(proposal1);
+            sut.Proposals.Add(proposal2);
 
+            var expectedFinishTime = DateTime.Parse("11:45 AM"); //proposals + lunch
+            
+            Assert.Equal(expectedFinishTime, sut.GetFinishTime());
+
+        }
+        
         [Fact]
-        public void DetermineIfScheduleSlotIsAvailable()
+        public void CalculateTotalProposalDuration()
         {
-            Assert.True(_sut.IsSessionAvailable(DateTime.Parse("9 AM")));
+            var proposal1 = _fixture.ProposalList[0]; //60 min
+            var proposal2 = _fixture.ProposalList[1]; // 45 min
+            
+            sut.Proposals = new List<Proposal>();
+            
+            sut.Proposals.Add(proposal1);
+            sut.Proposals.Add(proposal2);
+
+            var expectedTotalDuration = 105;
+            
+            Assert.Equal(expectedTotalDuration, sut.GetTotalProposalDuration());
+
         }
 
-        
-        
-        
     }
 }
