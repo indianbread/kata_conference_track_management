@@ -17,7 +17,7 @@ namespace Conference_Track_Management_Tests
         // }
 
         [Fact]
-        public void PrintTrackScheduleInfo()
+        public void FormatTrackScheduleInfo()
         {
             var track = new Track();
             track.Schedule.Add(DateTime.Parse("9 AM"), new Proposal("Writing Fast Tests Against Enterprise Rails", 60));
