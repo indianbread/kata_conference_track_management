@@ -12,14 +12,10 @@ namespace Conference_Track_Management_Tests
         public ProposalDataFixture()
         {
             ProposalList = GetProposalData();
-            TrackManager = new TrackManager(ProposalList);
-            Conference = new ConferenceManager(TrackManager);
-            
+
         }
 
         public List<Proposal> ProposalList = new List<Proposal>();
-        public IConferenceManager Conference;
-        public ITrackManager TrackManager;
 
         private List<Proposal> GetProposalData()
         {
