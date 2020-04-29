@@ -11,14 +11,11 @@ namespace Conference_Track_Management
         {
             _trackMaxDuration = 7 * 60;
             _trackMinDuration = 6 * 60;
-           // _proposals = proposals;
         }
 
         private readonly int _trackMinDuration;
         private readonly int _trackMaxDuration;
-       // private List<Proposal> _proposals;
 
-        
         public List<Track> GenerateTracksFromProposals(List<Proposal> proposals)
         {
             var unallocatedProposals = proposals.ToList(); 
@@ -135,8 +132,7 @@ namespace Conference_Track_Management
                 : TimeSpan.Parse($"0:{sessionDuration.ToString()}:00");
             return durationTimeSpan;
         }
-
-
+        
         private Track AllocateProposalsToTrack(List<Proposal> proposals)
         {
             var unAllocatedProposals = proposals;

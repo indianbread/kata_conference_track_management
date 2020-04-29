@@ -9,10 +9,11 @@ namespace Conference_Track_Management
         static void Main(string[] args)
         {
             //TODO: error handling if file path is unable to be located
-            var filePath = @$"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}/App_Data/Proposals.csv";
+            var filePath = @$"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}/App_Data/Proposals2.csv";
             var proposalsToAllocate = GetProposalsToAllocate(filePath);
-
-
+            var conferenceManager = new ConferenceManager(new TrackManager(), proposalsToAllocate);
+            var proposalAllocationResult = conferenceManager.AllocateAllProposals();
+            Printer.PrintAllocationResult(proposalAllocationResult);
         }
 
         private static List<Proposal> GetProposalsToAllocate(string filePath)

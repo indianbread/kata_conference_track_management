@@ -20,16 +20,5 @@ namespace Conference_Track_Management_Tests
 
         }
 
-        [Fact]
-        public void DisplayErrorMessageIfAllocationUnsuccessful()
-        {
-            ITrackManager trackManager = new TrackManager();
-            IConferenceManager conferenceManager = new ConferenceManager(trackManager, new List<Proposal>());
-            var expectedResult = "No proposals to allocate";
-            var actualResult = OutputFormatter.GetAllocationResult(conferenceManager);
-            
-            Assert.Equal(expectedResult, actualResult);
-        }
-        
     }
 }

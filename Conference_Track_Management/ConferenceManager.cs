@@ -12,7 +12,7 @@ namespace Conference_Track_Management
         }
 
         private ITrackManager _trackManager;
-        public List<Proposal> Proposals { get; private set; }
+        public List<Proposal> Proposals { get; }
         public ConferenceTrackResult AllocateAllProposals()
         {
             if (Proposals is null || Proposals.Count == 0) return ConferenceTrackResult.CreateError("No proposals to allocate");
