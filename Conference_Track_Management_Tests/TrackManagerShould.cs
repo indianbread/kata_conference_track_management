@@ -90,5 +90,12 @@ namespace Conference_Track_Management_Tests
             
         }
 
+        [Fact]
+        public void AssignTrackNumbersToTracks()
+        {
+            Assert.Equal(1, _track1.TrackNumber);
+            Assert.Equal(2, _track2.TrackNumber);
+        }
+
     }
 }

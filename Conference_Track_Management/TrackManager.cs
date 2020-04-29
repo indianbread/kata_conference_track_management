@@ -29,8 +29,16 @@ namespace Conference_Track_Management
                 CreateTrackSchedule(track);
                 tracks.Add(track);
             }
-
+            AssignTrackNumbers(tracks);
             return tracks;
+        }
+
+        private void AssignTrackNumbers(List<Track> tracks)
+        {
+            for (int i = 0; i < tracks.Count; i++)
+            {
+                tracks[i].TrackNumber = i + 1;
+            }
         }
 
         private void CreateTrackSchedule(Track track)
