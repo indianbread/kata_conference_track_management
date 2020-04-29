@@ -19,7 +19,7 @@ namespace Conference_Track_Management
         {
             foreach (var track in tracks)
             {
-                Console.WriteLine("Track" + track.TrackNumber);
+                Console.WriteLine("Track" + " "+ track.TrackNumber);
                 Console.WriteLine();
                 var proposalsFormatted = OutputFormatter.GenerateScheduleInfo(track);
                 foreach (var line in proposalsFormatted)
