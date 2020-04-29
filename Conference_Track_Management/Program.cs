@@ -11,7 +11,7 @@ namespace Conference_Track_Management
             //TODO: error handling if file path is unable to be located
             var filePath = @$"{Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName}/App_Data/Proposals.csv";
             var proposalsToAllocate = GetProposalsToAllocate(filePath);
-            var 
+
 
         }
 

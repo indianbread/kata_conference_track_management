@@ -7,21 +7,21 @@ namespace Conference_Track_Management
 {
     public class TrackManager : ITrackManager
     {
-        public TrackManager(List<Proposal> proposals)
+        public TrackManager()
         {
             _trackMaxDuration = 7 * 60;
             _trackMinDuration = 6 * 60;
-            _proposals = proposals;
+           // _proposals = proposals;
         }
 
         private readonly int _trackMinDuration;
         private readonly int _trackMaxDuration;
-        private List<Proposal> _proposals;
+       // private List<Proposal> _proposals;
 
         
-        public List<Track> GenerateTracksFromProposals()
+        public List<Track> GenerateTracksFromProposals(List<Proposal> proposals)
         {
-            var unallocatedProposals = _proposals.ToList(); 
+            var unallocatedProposals = proposals.ToList(); 
             var tracks = new List<Track>();
             while (unallocatedProposals != null && unallocatedProposals.Count > 0)
             {

@@ -30,5 +30,11 @@ namespace Conference_Track_Management
             var durationString = duration == 5 ? "lightning" : duration + "min";
             return time + " " + topic + " " + durationString;
         }
+
+        public static string GetAllocationResult(IConferenceManager conferenceManager)
+        {
+            var allocationResult = conferenceManager.AllocateAllProposals();
+            return allocationResult.IsSuccess ? "" : allocationResult.ErrorMessage;
+        }
     }
 }

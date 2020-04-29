@@ -19,8 +19,8 @@ namespace Conference_Track_Management_Tests
         public TrackManagerShould(ProposalDataFixture fixture)
         {
             _fixture = fixture;
-            _sut = new TrackManager(_fixture.ProposalList);
-            _tracks = _sut.GenerateTracksFromProposals();
+            _sut = new TrackManager();
+            _tracks = _sut.GenerateTracksFromProposals(_fixture.ProposalList);
             _track1 = _tracks[0];
             _track2 = _tracks[1];
 

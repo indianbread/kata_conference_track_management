@@ -7,15 +7,6 @@ namespace Conference_Track_Management_Tests
 {
     public class OutputFormatterShould
     {
-        // [Fact]
-        // public void NumberEachTrack()
-        // {
-        //     var tracks = new List<Track>() {new Track()};
-        //     
-        //     var sut = OutputFormatter.GetTrackInfo(tracks[0]);
-        //     Assert.Equal("Track 1", OutputFormatter.GetTrackInfo(tracks[0]));
-        // }
-
         [Fact]
         public void FormatTrackScheduleInfo()
         {
@@ -27,6 +18,17 @@ namespace Conference_Track_Management_Tests
             
             Assert.Equal(expectedSessionInfo, OutputFormatter.GenerateScheduleInfo(track));
 
+        }
+
+        [Fact]
+        public void DisplayErrorMessageIfAllocationUnsuccessful()
+        {
+            ITrackManager trackManager = new TrackManager();
+            IConferenceManager conferenceManager = new ConferenceManager(trackManager, new List<Proposal>());
+            var expectedResult = "No proposals to allocate";
+            var actualResult = OutputFormatter.GetAllocationResult(conferenceManager);
+            
+            Assert.Equal(expectedResult, actualResult);
         }
         
     }
