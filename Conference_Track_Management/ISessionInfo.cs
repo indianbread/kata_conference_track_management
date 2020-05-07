@@ -7,5 +7,6 @@ namespace Conference_Track_Management
         public DateTime GetStartTime();
 
         public DateTime GetFinishTime();
+        
     }
 }

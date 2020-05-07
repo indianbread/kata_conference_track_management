@@ -27,16 +27,12 @@ namespace Conference_Track_Management
             var finishTime = GetStartTime() + totalProposalDuration + lunchBreakDuration;
             return finishTime;
         }
-
+        
         public int GetTotalProposalDuration()
         {
             return Proposals.Sum(proposal => proposal.Duration);
         }
 
-        public bool IsSessionAvailable(DateTime dateTime)
-        {
-            return !Schedule.ContainsKey(dateTime);
-        }
     }
 
 }

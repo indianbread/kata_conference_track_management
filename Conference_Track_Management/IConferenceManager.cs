@@ -4,6 +4,6 @@ namespace Conference_Track_Management
 {
     public interface IConferenceManager
     {
-        ConferenceTrackResult AllocateAllProposalsToConference(List<Proposal> proposals);
+        ConferenceTrackResult AllocateAllProposals();
     }
 }
